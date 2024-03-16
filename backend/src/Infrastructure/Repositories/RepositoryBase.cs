@@ -1,9 +1,8 @@
 using System.Linq.Expressions;
 using Ecommerce.Application.Persistence;
-using Ecommerce.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ecommerce.Infrastructure.Repositories;
+namespace Ecommerce.Persistence.Repositories;
 
 public class RepositoryBase<T> : IAsyncRepository<T> where T : class
 {

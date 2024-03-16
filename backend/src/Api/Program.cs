@@ -12,6 +12,9 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure Infrastructure Injection
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
 builder.Services.AddDbContext<EcommerceDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"),
         b => b.MigrationsAssembly(typeof(EcommerceDbContext).Assembly.FullName)
