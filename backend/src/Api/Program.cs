@@ -1,6 +1,6 @@
 using System.Text;
 using Ecommerce.Domain;
-using Ecommerce.Persistence;
+using Ecommerce.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

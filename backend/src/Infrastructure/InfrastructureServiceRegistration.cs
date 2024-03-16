@@ -1,10 +1,10 @@
 using Ecommerce.Application.Models.Token;
 using Ecommerce.Application.Persistence;
-using Ecommerce.Persistence.Repositories;
+using Ecommerce.Infrastructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ecommerce.Persistence;
+namespace Ecommerce.Infrastructure.Persistence;
 
 public static class InfrastructureServiceRegistration 
 {

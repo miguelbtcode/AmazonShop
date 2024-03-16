@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ecommerce.Persistence;
+namespace Ecommerce.Infrastructure.Persistence;
 
 public class EcommerceDbContext : IdentityDbContext<Usuario> {
 
@@ -83,4 +83,5 @@ public class EcommerceDbContext : IdentityDbContext<Usuario> {
     public DbSet<ShoppingCart>? ShoppingCarts { get; set; }
     public DbSet<ShoppingCartItem>? ShoppingCartItems { get; set; }
     public DbSet<OrderAddress>? OrderAddresses { get; set; }
+    public DbSet<Country> Countries { get; set; }
 }
