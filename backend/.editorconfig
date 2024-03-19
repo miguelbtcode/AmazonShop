@@ -1,0 +1,4 @@
+[*.cs]
+
+# CA2201: No provocar tipos de excepción reservados
+dotnet_diagnostic.CA2201.severity = none
