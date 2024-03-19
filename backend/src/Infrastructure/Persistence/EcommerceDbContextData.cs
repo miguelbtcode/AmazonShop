@@ -15,7 +15,7 @@ public class EcommerceDbContextData
     {
         try
         {
-            if (roleManager.Roles.Any())
+            if (!roleManager.Roles.Any())
             {
                 await roleManager.CreateAsync(new IdentityRole(Role.ADMIN));
                 await roleManager.CreateAsync(new IdentityRole(Role.USER));
@@ -33,7 +33,7 @@ public class EcommerceDbContextData
                     AvatarUrl = "https://firebasestorage.googleapis.com/v0/b/edificacion-app.appspot.com/o/vaxidrez.jpg?alt=media&token=14a28860-d149-461e-9c25-9774d7ac1b24"
                 };
 
-                await usuarioManager.CreateAsync(usuarioAdmin, "$Passw0rdMiguelBtcode$");
+                await usuarioManager.CreateAsync(usuarioAdmin, "$Passw0rdAdmin$");
                 await usuarioManager.AddToRoleAsync(usuarioAdmin, Role.ADMIN);
 
                 var usuario = new Usuario 
