@@ -1,5 +1,8 @@
 using System.Text;
+using Ecommerce.Application.Contracts.Infrastructure;
+using Ecommerce.Application.Models.Email;
 using Ecommerce.Domain;
+using Ecommerce.Infrastructure.MessageImplementation;
 using Ecommerce.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -64,6 +67,10 @@ builder.Services.AddCors(opt =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configure GmailSettings
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.Configure<GmailSettings>(builder.Configuration.GetSection("GmailSettings"));
 
 var app = builder.Build();
 
