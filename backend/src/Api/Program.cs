@@ -1,9 +1,14 @@
 using System.Text;
+using System.Text.Json.Serialization;
+using Ecommerce.Application;
 using Ecommerce.Application.Contracts.Infrastructure;
+using Ecommerce.Application.Features.Products.Queries.GetProductList;
 using Ecommerce.Application.Models.Email;
 using Ecommerce.Domain;
+using Ecommerce.Infrastructure.ImageCloudinary;
 using Ecommerce.Infrastructure.MessageImplementation;
 using Ecommerce.Infrastructure.Persistence;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -17,20 +22,28 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configure Infrastructure Injection
 builder.Services.AddInfrastructureServices(builder.Configuration);
+// Configure Application Injection
+builder.Services.AddApplicationServices(builder.Configuration);
 
 builder.Services.AddDbContext<EcommerceDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"),
-        b => b.MigrationsAssembly(typeof(EcommerceDbContext).Assembly.FullName)
-        )
+                 options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"),
+                 b => b.MigrationsAssembly(typeof(EcommerceDbContext).Assembly.FullName)
+            )
 );
 
-// Add services to the container.
+// Add pattern mediator
+builder.Services.AddMediatR(typeof(GetProductListQueryHandler).Assembly);
 
+// Add Image Service
+builder.Services.AddScoped<IManageImageService, ManageImageService>();
+
+// Add services to the container.
 builder.Services.AddControllers(opt => 
 {
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     opt.Filters.Add(new AuthorizeFilter(policy));
-});
+})
+.AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 IdentityBuilder identityBuilder = builder.Services.AddIdentityCore<Usuario>();
 identityBuilder = new IdentityBuilder(identityBuilder.UserType, identityBuilder.Services);
@@ -69,8 +82,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Configure GmailSettings
-builder.Services.AddTransient<IEmailService, EmailService>();
-builder.Services.Configure<GmailSettings>(builder.Configuration.GetSection("GmailSettings"));
+//builder.Services.AddTransient<IEmailService, EmailService>();
+//builder.Services.Configure<GmailSettings>(builder.Configuration.GetSection("GmailSettings"));
 
 var app = builder.Build();
 
