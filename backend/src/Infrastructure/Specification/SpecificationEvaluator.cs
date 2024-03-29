@@ -19,7 +19,7 @@ public class SpecificationEvaluator<T> where T : class
 
         if (spec.OrderByDescending != null)
         {
-            inputQuery = inputQuery.OrderBy(spec.OrderByDescending);
+            inputQuery = inputQuery.OrderByDescending(spec.OrderByDescending);
         }
 
         if (spec.IsPagingEnable)
