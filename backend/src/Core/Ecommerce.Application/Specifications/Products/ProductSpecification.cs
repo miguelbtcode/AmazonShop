@@ -1,4 +1,3 @@
-using System.Drawing;
 using Ecommerce.Domain;
 
 namespace Ecommerce.Application.Specifications.Products;
