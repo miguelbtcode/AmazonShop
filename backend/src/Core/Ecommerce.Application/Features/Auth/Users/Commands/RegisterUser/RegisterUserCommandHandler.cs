@@ -67,6 +67,6 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
             };
         }
 
-        throw new Exception("No se pudo registrar el usuario");
+        throw new Exception($"No se pudo registrar el usuario: {result.Errors}");
     }
 }
