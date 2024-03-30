@@ -1,12 +1,11 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using Ecommerce.Api.Middlewares;
 using Ecommerce.Application;
 using Ecommerce.Application.Contracts.Infrastructure;
 using Ecommerce.Application.Features.Products.Queries.GetProductList;
-using Ecommerce.Application.Models.Email;
 using Ecommerce.Domain;
 using Ecommerce.Infrastructure.ImageCloudinary;
-using Ecommerce.Infrastructure.MessageImplementation;
 using Ecommerce.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
@@ -96,12 +95,10 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.UseCors("CorsPolicy");
-
 app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
