@@ -27,7 +27,7 @@ public class EcommerceDbContextData
                 {
                     Nombre = "Miguel",
                     Apellido = "Barreto",
-                    Email = "miguel.barreto.social@gmail.com",
+                    Email = "mabt2206@gmail.com",
                     UserName = "miguel.barreto",
                     Telefono = "998988723",
                     AvatarUrl = "https://firebasestorage.googleapis.com/v0/b/edificacion-app.appspot.com/o/vaxidrez.jpg?alt=media&token=14a28860-d149-461e-9c25-9774d7ac1b24"

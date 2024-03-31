@@ -2,6 +2,7 @@ using System.Net;
 using Ecommerce.Application.Contracts.Infrastructure;
 using Ecommerce.Application.Features.Auth.Users.Commands.LoginUser;
 using Ecommerce.Application.Features.Auth.Users.Commands.RegisterUser;
+using Ecommerce.Application.Features.Auth.Users.Commands.SendPassword;
 using Ecommerce.Application.Features.Auth.Users.Vms;
 using Ecommerce.Application.Models.ImageManagement;
 using MediatR;
@@ -24,7 +25,7 @@ public class UsuarioController : ControllerBase
     }
 
     [AllowAnonymous]
-    [HttpPost("login", Name = "Login")]
+    [HttpPost("Login", Name = "Login")]
     [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginUserCommand request)
     {
@@ -48,6 +49,14 @@ public class UsuarioController : ControllerBase
             request.FotoUrl = resultImage.Url;
         }
 
+        return await _mediator.Send(request);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("ForgotPassword", Name = "ForgotPassword")]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<string>> ForgotPassword([FromBody] SendPasswordCommand request)
+    {
         return await _mediator.Send(request);
     }
 }
