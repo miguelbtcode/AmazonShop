@@ -2,6 +2,7 @@ using System.Net;
 using Ecommerce.Application.Contracts.Infrastructure;
 using Ecommerce.Application.Features.Auth.Users.Commands.LoginUser;
 using Ecommerce.Application.Features.Auth.Users.Commands.RegisterUser;
+using Ecommerce.Application.Features.Auth.Users.Commands.ResetPassword;
 using Ecommerce.Application.Features.Auth.Users.Commands.ResetPasswordByToken;
 using Ecommerce.Application.Features.Auth.Users.Commands.SendPassword;
 using Ecommerce.Application.Features.Auth.Users.Vms;
@@ -65,6 +66,13 @@ public class UsuarioController : ControllerBase
     [HttpPost("ResetPassword", Name = "ResetPassword")]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<string>> ResetPassword([FromBody] ResetPasswordByTokenCommand request)
+    {
+        return await _mediator.Send(request);
+    }
+
+    [HttpPost("UpdatePassword", Name = "UpdatePassword")]
+    [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<Unit>> UpdatePassword([FromBody] ResetPasswordCommand request)
     {
         return await _mediator.Send(request);
     }
