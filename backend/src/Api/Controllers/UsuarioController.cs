@@ -5,6 +5,7 @@ using Ecommerce.Application.Features.Auth.Users.Commands.RegisterUser;
 using Ecommerce.Application.Features.Auth.Users.Commands.ResetPassword;
 using Ecommerce.Application.Features.Auth.Users.Commands.ResetPasswordByToken;
 using Ecommerce.Application.Features.Auth.Users.Commands.SendPassword;
+using Ecommerce.Application.Features.Auth.Users.Commands.UpdateUser;
 using Ecommerce.Application.Features.Auth.Users.Vms;
 using Ecommerce.Application.Models.ImageManagement;
 using MediatR;
@@ -74,6 +75,25 @@ public class UsuarioController : ControllerBase
     [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<Unit>> UpdatePassword([FromBody] ResetPasswordCommand request)
     {
+        return await _mediator.Send(request);
+    }
+
+    [HttpPut("Update", Name = "Update")]
+    [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<AuthResponse>> Update([FromForm] UpdateUserCommand request)
+    {
+        if (request.Foto is not null)
+        {
+            var resultUploadImage = await _manageImageService.UploadImage(new ImageData
+            {
+                ImageStream = request.Foto.OpenReadStream(),
+                Nombre = request.Foto.Name
+            });
+
+            request.FotoId = resultUploadImage.PublicId;
+            request.FotoUrl = resultUploadImage.Url;
+        }
+        
         return await _mediator.Send(request);
     }
 }
