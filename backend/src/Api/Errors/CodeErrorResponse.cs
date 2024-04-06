@@ -16,7 +16,7 @@ public class CodeErrorResponse
 
         if (message is null)
         {
-            Message = new string[0];
+            Message = Array.Empty<string>();
             var text = GetDefaultMessageStatusCode(statusCode);
             Message[0] = text;
         }
