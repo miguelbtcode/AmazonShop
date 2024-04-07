@@ -80,10 +80,6 @@ builder.Services.AddCors(opt =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configure GmailSettings
-//builder.Services.AddTransient<IEmailService, EmailService>();
-//builder.Services.Configure<GmailSettings>(builder.Configuration.GetSection("GmailSettings"));
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
