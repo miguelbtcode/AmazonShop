@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 
 namespace Ecommerce.Infrastructure.Persistence;
 
-public class EcommerceDbContextData 
+public class EcommerceDbContextData
 {
-    public static async Task LoadDataAsync (EcommerceDbContext context,
+    public static async Task LoadDataAsync(EcommerceDbContext context,
                                             UserManager<Usuario> usuarioManager,
                                             RoleManager<IdentityRole> roleManager,
                                             ILoggerFactory loggerFactory)
@@ -23,7 +23,7 @@ public class EcommerceDbContextData
 
             if (!usuarioManager.Users.Any())
             {
-                var usuarioAdmin = new Usuario 
+                var usuarioAdmin = new Usuario
                 {
                     Nombre = "Miguel",
                     Apellido = "Barreto",
@@ -36,7 +36,7 @@ public class EcommerceDbContextData
                 await usuarioManager.CreateAsync(usuarioAdmin, "$Passw0rdAdmin$");
                 await usuarioManager.AddToRoleAsync(usuarioAdmin, Role.ADMIN);
 
-                var usuario = new Usuario 
+                var usuario = new Usuario
                 {
                     Nombre = "Juan",
                     Apellido = "Perez",
@@ -49,7 +49,7 @@ public class EcommerceDbContextData
                 await usuarioManager.CreateAsync(usuario, "$Passw0rdJuanPerez123$");
                 await usuarioManager.AddToRoleAsync(usuario, Role.USER);
             }
-        
+
             if (!context.Categories!.Any())
             {
                 var categoryData = File.ReadAllText("../Infrastructure/Data/category.json");
@@ -79,7 +79,7 @@ public class EcommerceDbContextData
                 var reviewData = File.ReadAllText("../Infrastructure/Data/review.json");
                 var reviews = JsonConvert.DeserializeObject<List<Review>>(reviewData)!;
                 await context.Reviews!.AddRangeAsync(reviews);
-                await context.SaveChangesAsync();            
+                await context.SaveChangesAsync();
             }
 
             if (!context.Countries!.Any())

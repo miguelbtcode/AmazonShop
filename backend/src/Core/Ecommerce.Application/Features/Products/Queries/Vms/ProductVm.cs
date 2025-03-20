@@ -10,6 +10,7 @@ public class ProductVm
     public int Id { get; set; }
     public string? Nombre { get; set; }
     public decimal Precio { get; set; }
+    public string? Descripcion { get; set; }
     public int Rating { get; set; }
     public string? Vendedor { get; set; }
     public int Stock { get; set; }
@@ -19,19 +20,23 @@ public class ProductVm
     public string? CategoryNombre { get; set; }
     public int NumeroReviews { get; set; }
     public ProductStatus Status { get; set; }
-    public string StatusLabel {
-        get {
-            switch(Status)
+    public string StatusLabel
+    {
+        get
+        {
+            switch (Status)
             {
-                case ProductStatus.Activo: {
-                    return ProductStatusLabel.ACTIVE;
-                }
+                case ProductStatus.Activo:
+                    {
+                        return ProductStatusLabel.ACTIVE;
+                    }
 
-                case ProductStatus.Inactivo: {
-                    return ProductStatusLabel.INACTIVE;
-                }
-                
-                default : return ProductStatusLabel.INACTIVE;
+                case ProductStatus.Inactivo:
+                    {
+                        return ProductStatusLabel.INACTIVE;
+                    }
+
+                default: return ProductStatusLabel.INACTIVE;
             }
         }
         set { }

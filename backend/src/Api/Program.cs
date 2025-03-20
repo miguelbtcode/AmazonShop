@@ -37,7 +37,7 @@ builder.Services.AddMediatR(typeof(GetProductListQueryHandler).Assembly);
 builder.Services.AddScoped<IManageImageService, ManageImageService>();
 
 // Add services to the container.
-builder.Services.AddControllers(opt => 
+builder.Services.AddControllers(opt =>
 {
     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     opt.Filters.Add(new AuthorizeFilter(policy));
@@ -57,7 +57,7 @@ builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
 
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:key"]!));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddJwtBearer(opt => 
+.AddJwtBearer(opt =>
 {
     opt.TokenValidationParameters = new TokenValidationParameters
     {
@@ -68,7 +68,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     };
 });
 
-builder.Services.AddCors(opt => 
+builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("CorsPolicy", builder => builder
                                 .AllowAnyOrigin()

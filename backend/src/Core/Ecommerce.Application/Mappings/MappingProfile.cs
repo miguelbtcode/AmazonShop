@@ -6,6 +6,10 @@ using Ecommerce.Domain;
 
 namespace Ecommerce.Application.Mappings;
 
+using Features.Categories.Vms;
+using Features.Countries.Vms;
+using Features.Products.Commands.CreateProduct;
+
 public class MappingProfile : Profile
 {
     public MappingProfile()
@@ -16,5 +20,9 @@ public class MappingProfile : Profile
 
         CreateMap<Image, ImageVm>();
         CreateMap<Review, ReviewVm>();
+        CreateMap<Country, CountryVm>();
+        CreateMap<Category, CategoryVm>();
+        CreateMap<CreateProductCommand, Product>();
+        CreateMap<CreateProductImageCommand, Image>();
     }
 }

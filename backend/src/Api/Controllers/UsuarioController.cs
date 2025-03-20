@@ -1,5 +1,6 @@
 using System.Net;
 using Ecommerce.Application.Contracts.Infrastructure;
+using Ecommerce.Application.Features.Auths.Roles.Queries.GetRoles;
 using Ecommerce.Application.Features.Auths.Users.Commands.LoginUser;
 using Ecommerce.Application.Features.Auths.Users.Commands.RegisterUser;
 using Ecommerce.Application.Features.Auths.Users.Commands.ResetPassword;
@@ -11,7 +12,9 @@ using Ecommerce.Application.Features.Auths.Users.Commands.UpdateUser;
 using Ecommerce.Application.Features.Auths.Users.Queries.GetUserById;
 using Ecommerce.Application.Features.Auths.Users.Queries.GetUserByToken;
 using Ecommerce.Application.Features.Auths.Users.Queries.GetUserByUsername;
+using Ecommerce.Application.Features.Auths.Users.Queries.PaginationUsers;
 using Ecommerce.Application.Features.Auths.Users.Vms;
+using Ecommerce.Application.Features.Shared.Queries.Vms;
 using Ecommerce.Application.Models.Auth;
 using Ecommerce.Application.Models.ImageManagement;
 using Ecommerce.Domain;
@@ -50,11 +53,11 @@ public class UsuarioController : ControllerBase
         if (request.Foto is not null)
         {
             var resultImage = await _manageImageService.UploadImage(new ImageData
-                                                                    {
-                                                                        ImageStream = request.Foto.OpenReadStream(),
-                                                                        Nombre = request.Foto.Name
-                                                                    });
-            
+            {
+                ImageStream = request.Foto.OpenReadStream(),
+                Nombre = request.Foto.Name
+            });
+
             request.FotoId = resultImage.PublicId;
             request.FotoUrl = resultImage.Url;
         }
@@ -100,7 +103,7 @@ public class UsuarioController : ControllerBase
             request.FotoId = resultUploadImage.PublicId;
             request.FotoUrl = resultUploadImage.Url;
         }
-        
+
         return await _mediator.Send(request);
     }
 
@@ -143,6 +146,25 @@ public class UsuarioController : ControllerBase
     public async Task<ActionResult<AuthResponse>> GetUserByUsername(string username)
     {
         var query = new GetUserByUsernameQuery(username);
+        return await _mediator.Send(query);
+    }
+
+    [Authorize(Roles = Role.ADMIN)]
+    [HttpGet("paginationAdmin", Name = "PaginationUser")]
+    [ProducesResponseType(typeof(PaginationVm<Usuario>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<PaginationVm<Usuario>>> PaginationUser(
+        [FromQuery] PaginationUsersQuery paginationUsersQuery)
+    {
+        var paginationUser = await _mediator.Send(paginationUsersQuery);
+        return Ok(paginationUser);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("roles", Name = "GetRolesList")]
+    [ProducesResponseType(typeof(List<string>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<List<string>>> GetRolesList()
+    {
+        var query = new GetRolesQuery();
         return await _mediator.Send(query);
     }
 }

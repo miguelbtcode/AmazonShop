@@ -11,15 +11,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Api.Controllers;
 
+using Application.Contracts.Infrastructure;
+using Application.Features.Products.Commands.CreateProduct;
+using Application.Models.Auth;
+using Application.Models.ImageManagement;
+
 [ApiController]
 [Route("api/v1/[controller]")]
 public class ProductController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IManageImageService _manageImageService;
 
-    public ProductController(IMediator mediator)
+    public ProductController(IMediator mediator, IManageImageService manageImageService)
     {
-        _mediator = mediator;    
+        _mediator = mediator;
+        this._manageImageService = manageImageService;
     }
 
     [AllowAnonymous]
@@ -52,5 +59,35 @@ public class ProductController : ControllerBase
     {
         var query = new GetProductByIdQuery(id);
         return Ok(await _mediator.Send(query));
+    }
+    
+    [Authorize(Roles = Role.ADMIN)]
+    [HttpPost("create", Name = "CreateProduct")]
+    [ProducesResponseType(typeof(ProductVm), (int)HttpStatusCode.Created)]
+    public async Task<ActionResult<ProductVm>> CreateProduct([FromForm] CreateProductCommand request)
+    {
+        var listFotoUrls = new List<CreateProductImageCommand>();
+
+        if (request.Fotos is not null)
+        {
+            foreach (var foto in request.Fotos)
+            {
+                var resultImage = await _manageImageService.UploadImage(new ImageData
+                {
+                    ImageStream = foto.OpenReadStream(),
+                    Nombre = foto.Name
+                });
+
+                var fotoCommand = new CreateProductImageCommand
+                {
+                    PublicCode = resultImage.PublicId, Url = resultImage.Url
+                };
+                
+                listFotoUrls.Add(fotoCommand);
+            }
+            request.ImagesUrl = listFotoUrls;
+        }
+
+        return await _mediator.Send(request);
     }
 }

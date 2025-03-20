@@ -6,20 +6,22 @@ public class ProductForCountingSpecification : BaseSpecification<Product>
 {
     public ProductForCountingSpecification(ProductSpecificationParams productParams)
         : base(
-            x => 
+            x =>
             (string.IsNullOrEmpty(productParams.Search) || x.Nombre!.Contains(productParams.Search)
                 || x.Descripcion!.Contains(productParams.Search)
-            ) 
+            )
             &&
             (!productParams.CategoryId.HasValue || x.CategoryId == productParams.CategoryId)
             &&
-            (!productParams.PrecioMin.HasValue  || x.Precio >= productParams.PrecioMin)
+            (!productParams.PrecioMin.HasValue || x.Precio >= productParams.PrecioMin)
             &&
-            (!productParams.PrecioMax.HasValue  || x.Precio >= productParams.PrecioMax)
+            (!productParams.PrecioMax.HasValue || x.Precio <= productParams.PrecioMax)
             &&
-            (!productParams.Status.HasValue     || x.Status == productParams.Status)
+            (!productParams.Status.HasValue || x.Status == productParams.Status)
+            &&
+            (!productParams.Rating.HasValue || x.CategoryId == productParams.Rating)
         )
     {
-        
+
     }
 }

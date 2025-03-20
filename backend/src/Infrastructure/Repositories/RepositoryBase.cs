@@ -82,7 +82,7 @@ public class RepositoryBase<T> : IAsyncRepository<T> where T : class
     {
         IQueryable<T> query = _context.Set<T>();
 
-        if (disableTracking) 
+        if (disableTracking)
             query = query.AsNoTracking();
 
         if (includes is not null)
@@ -109,7 +109,7 @@ public class RepositoryBase<T> : IAsyncRepository<T> where T : class
 
         if (predicate is not null)
             query = query.Where(predicate);
-        
+
         return (await query.FirstOrDefaultAsync())!;
     }
 
@@ -124,7 +124,7 @@ public class RepositoryBase<T> : IAsyncRepository<T> where T : class
     public void UpdateEntity(T entity)
     {
         _context.Set<T>().Attach(entity);
-        _context.Entry(entity).State = EntityState.Modified;        
+        _context.Entry(entity).State = EntityState.Modified;
     }
 
     public async Task<int> CountAsync(ISpecification<T> spec)

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using AutoMapper;
 using Ecommerce.Application.Features.Products.Queries.Vms;
 using Ecommerce.Application.Features.Shared.Queries.Vms;
@@ -50,7 +51,7 @@ public class PaginationProductsQueryHandler : IRequestHandler<PaginationProducts
         var pagination = new PaginationVm<ProductVm>
         {
             Count = totalProducts,
-            PageIndex = request.PageIndex, 
+            PageIndex = request.PageIndex,
             PageSize = request.PageSize,
             Data = data,
             PageCount = totalPages,

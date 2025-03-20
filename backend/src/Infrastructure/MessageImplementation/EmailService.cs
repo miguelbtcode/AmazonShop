@@ -20,43 +20,43 @@ public class EmailService : IEmailService
 
     public async Task<bool> SendEmail(EmailMessage email, string token)
     {
-        
-            var fromEmail = _gmailSettings.Username;
-            var password = _gmailSettings.Password;
 
-            var smtpClient = new SmtpClient("smtp.gmail.com")
-            {
-                Port = _gmailSettings.Port,
-                Credentials = new NetworkCredential(fromEmail, password),
-                EnableSsl = true
-            };
+        var fromEmail = _gmailSettings.Username;
+        var password = _gmailSettings.Password;
 
-            var message = new MailMessage
-            {
-                From = new MailAddress(fromEmail!),
-                Subject = email.Subject,
-                Body = email.Body,
-                IsBodyHtml = true
-            };
+        var smtpClient = new SmtpClient("smtp.gmail.com")
+        {
+            Port = _gmailSettings.Port,
+            Credentials = new NetworkCredential(fromEmail, password),
+            EnableSsl = true
+        };
 
-            message.To.Add(new MailAddress(email.To!));
+        var message = new MailMessage
+        {
+            From = new MailAddress(fromEmail!),
+            Subject = email.Subject,
+            Body = email.Body,
+            IsBodyHtml = true
+        };
 
-            try
-            {
-                // Enviar el correo de forma asíncrona
-                var userToken = new CancellationToken(); // Puedes pasar cualquier objeto como userToken
-                await smtpClient.SendMailAsync(message, userToken);
-                return true;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError("El email no pudo enviarse, existen errores", e);
-                return false;
-            }
-            finally
-            {
-                smtpClient.Dispose();
-                message.Dispose();
-            }
+        message.To.Add(new MailAddress(email.To!));
+
+        try
+        {
+            // Enviar el correo de forma asíncrona
+            var userToken = new CancellationToken(); // Puedes pasar cualquier objeto como userToken
+            await smtpClient.SendMailAsync(message, userToken);
+            return true;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("El email no pudo enviarse, existen errores", e);
+            return false;
+        }
+        finally
+        {
+            smtpClient.Dispose();
+            message.Dispose();
+        }
     }
 }
